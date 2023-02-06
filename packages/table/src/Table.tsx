@@ -1,6 +1,22 @@
 import React from 'react';
-import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
+import { alpha, styled } from '@mui/material/styles';
+import { DataGrid, GridRowsProp, GridColDef, gridClasses } from '@mui/x-data-grid';
 
+const ODD_OPACITY = 0.2;
+
+const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
+    border: 0,
+    '& .MuiDataGrid-iconSeparator': {
+        display: 'none',
+    },
+    '& .MuiDataGrid-cell': {
+        fontFamily: 'Lato',
+        fontWeight: 400,
+        fontSize: '15px',
+        lineHeight: '17px',
+        boxSizing: 'none', borderBottom: 'none',
+    }
+}));
 
 const Table: React.FunctionComponent<{}> = () => {
     const rows: GridRowsProp = [
@@ -29,7 +45,7 @@ const Table: React.FunctionComponent<{}> = () => {
             sortable: false,
             valueOptions: () => typeOptions,
             valueFormatter: ({ id: rowId, value, field }) =>
-                typeOptions.find((opt) => opt.value === value).label,
+                typeOptions.find((opt) => opt.value === value)?.label,
             editable: true
         },
         { field: 'weight', type: "number", headerName: 'Weight', width: 130, sortable: false },
@@ -37,10 +53,12 @@ const Table: React.FunctionComponent<{}> = () => {
     ];
     return (
         <div style={{ height: 520, width: '1180px' }}>
-            <DataGrid
+            <StripedDataGrid
                 rows={rows}
                 columns={columns}
                 rowHeight={30}
+                showColumnRightBorder={false}
+                showCellRightBorder={false}
                 initialState={{
                     sorting: {
                         sortModel: [{ field: 'md', sort: 'desc' }]
